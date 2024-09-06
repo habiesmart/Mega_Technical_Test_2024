@@ -1,59 +1,73 @@
-﻿@model BPKBViewModel
+﻿@model IEnumerable<BPKBViewModel>
 
-@{
-    ViewData["Title"] = "Create BPKB";
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agreements List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-<div class="card">
-    <form action="/Home/Create" method="post">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label for="AgreementNumber" class="form-label">Agreement Number</label>
-                        <input type="text" class="form-control" id="AgreementNumber" name="AgreementNumber" placeholder="Input Agreement Number">
-                    </div>
-                    <div class="mb-3">
-                        <label for="BranchId" class="form-label">Branch Id</label>
-                        <input type="text" class="form-control" id="BranchId" name="BranchId" placeholder="Input Branch Id">
-                    </div>
-                    <div class="mb-3">
-                        <label for="BpkbNo" class="form-label">No. BPKB</label>
-                        <input type="text" class="form-control" id="BpkbNo" name="BpkbNo" placeholder="Input No. BPKB">
-                    </div>
-                    <div class="mb-3">
-                        <label for="BpkbDateIn" class="form-label">Tanggal BPKB In</label>
-                        <input type="date" class="form-control" id="BpkbDateIn" name="BpkbDateIn" placeholder="Input Tanggal BPKB In">
-                    </div>
-                    <div class="mb-3">
-                        <label for="BpkbDate" class="form-label">Tanggal BPKB</label>
-                        <input type="date" class="form-control" id="BpkbDate" name="BpkbDate" placeholder="Input Tanggal BPKB">
-                    </div>
-                    <div class="mb-3">
-                        <label for="FakturNo" class="form-label">No. Faktur</label>
-                        <input type="text" class="form-control" id="FakturNo" name="FakturNo" placeholder="Input No. Faktur">
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label for="FakturDate" class="form-label">Tanggal Faktur</label>
-                        <input type="date" class="form-control" id="FakturDate" name="FakturDate" placeholder="Input Tanggal Faktur">
-                    </div>
-                    <div class="mb-3">
-                        <label for="PoliceNo" class="form-label">Nomor Polisi</label>
-                        <input type="text" class="form-control" id="PoliceNo" name="PoliceNo" placeholder="Input Nomor Polisi">
-                    </div>
-                    <div class="mb-3">
-                        <label for="LocationId" class="form-label">Lokasi Penyimpanan</label>
-                        @Html.DropDownList("LocationId", Model.Location, "Pilih Lokasi Penyimpanan", new { @class = "form-select" })
-@* 
-                        <select class="form-select" id="LocationId" name="LocationId" placeholder="Input Lokasi Penyimpanan">
-                            <option value="1">Jakarta</option>
-                        </select> *@
-                    </div>
-                </div>
-            </div>
-            <button class="btn btn-warning form-control text-light">Save</button>
-        </div>
-    </form>
-</div>
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Agreements List</h1>
+    <a href="/Home/Create">Buat Data Baru</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Agreement Number</th>
+                <th>Bpkb No</th>
+                <th>Branch ID</th>
+                <th>Bpkb Date</th>
+                <th>Faktur No</th>
+                <th>Faktur Date</th>
+                <th>Location ID</th>
+                <th>Police No</th>
+                <th>Bpkb Date In</th>
+                <th>Bpkb Date In</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var agreement in Model)
+            {
+                <tr>
+                    <td>@agreement.AgreementNumber</td>
+                    <td>@agreement.BpkbNo</td>
+                    <td>@agreement.BranchId</td>
+                    <td>@agreement.BpkbDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@agreement.FakturNo</td>
+                    <td>@agreement.FakturDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@agreement.LocationId</td>
+                    <td>@agreement.PoliceNo</td>
+                    <td>@agreement.BpkbDateIn?.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <a href="/Home/ReadOrUpdate?agreementNumber=@agreement.AgreementNumber">Edit</a> | <a class="text-danger" href="/Home/Delete">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

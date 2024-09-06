@@ -1,0 +1,60 @@
+﻿@model BPKBViewModel
+
+@{
+    ViewData["Title"] = "Create BPKB";
+}
+
+<div class="card">
+    @Html.AntiForgeryToken();
+    <form action="/Home/Update" method="post">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="AgreementNumber" class="form-label">Agreement Number</label>
+                        <input type="text" class="form-control" id="AgreementNumber" name="AgreementNumber" placeholder="Input Agreement Number" value="@Model?.AgreementNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label for="BranchId" class="form-label">Branch Id</label>
+                        <input type="text" class="form-control" id="BranchId" name="BranchId" placeholder="Input Branch Id" value="@Model?.BranchId">
+                    </div>
+                    <div class="mb-3">
+                        <label for="BpkbNo" class="form-label">No. BPKB</label>
+                        <input type="text" class="form-control" id="BpkbNo" name="BpkbNo" placeholder="Input No. BPKB" value="@Model?.BpkbNo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="BpkbDateIn" class="form-label">Tanggal BPKB In</label>
+                        <input type="date" class="form-control" id="BpkbDateIn" name="BpkbDateIn" placeholder="Input Tanggal BPKB In" value="@Model?.BpkbDateIn?.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="mb-3">
+                        <label for="BpkbDate" class="form-label">Tanggal BPKB</label>
+                        <input type="date" class="form-control" id="BpkbDate" name="BpkbDate" placeholder="Input Tanggal BPKB" value="@Model?.BpkbDate?.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="mb-3">
+                        <label for="FakturNo" class="form-label">No. Faktur</label>
+                        <input type="text" class="form-control" id="FakturNo" name="FakturNo" placeholder="Input No. Faktur" value="@Model?.FakturNo">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="FakturDate" class="form-label">Tanggal Faktur</label>
+                        <input type="date" class="form-control" id="FakturDate" name="FakturDate" placeholder="Input Tanggal Faktur" value="@Model?.FakturDate?.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="mb-3">
+                        <label for="PoliceNo" class="form-label">Nomor Polisi</label>
+                        <input type="text" class="form-control" id="PoliceNo" name="PoliceNo" placeholder="Input Nomor Polisi" value="@Model?.PoliceNo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="LocationId" class="form-label">Lokasi Penyimpanan</label>
+                        @Html.DropDownList("LocationId", Model?.Location, "Pilih Lokasi Penyimpanan", new { @class = "form-select" })
+                        @*
+                        <select class="form-select" id="LocationId" name="LocationId" placeholder="Input Lokasi Penyimpanan">
+                        <option value="1">Jakarta</option>
+                        </select> *@
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-warning form-control text-light">Save</button>
+        </div>
+    </form>
+</div>

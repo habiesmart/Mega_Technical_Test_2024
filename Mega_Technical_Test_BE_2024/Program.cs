@@ -3,6 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = Environment.GetEnvironmentVariable("Mega_Technical_Test_DB");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string 'Mega_Technical_Test_DB' is not set.");
+}
+
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(jsonOptions =>
@@ -25,7 +32,7 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddDbContext<MegaTechnicalTestDbContext>(options => 
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("Mega_Technical_Test_DB")
+        builder.Configuration.GetConnectionString(connectionString)
         )
     );
 

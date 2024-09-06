@@ -25,6 +25,19 @@ namespace Mega_Technical_Test_2024.Controllers
         {
             if (!string.IsNullOrEmpty(Request.Cookies["UserName"]))
             {
+                List<BPKBViewModel> listbpkb = this.bpkbRequest.ListBPKB().Result;
+
+                return View(listbpkb);
+            }
+
+            return Redirect("Auth/Login");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            if (!string.IsNullOrEmpty(Request.Cookies["UserName"]))
+            {
                 BPKBViewModel bpkb = new BPKBViewModel();
 
                 bpkb.Location = this.bpkbRequest.GetListStorageLocations().Result.Select(location =>
@@ -34,9 +47,12 @@ namespace Mega_Technical_Test_2024.Controllers
                     Text = location.LocationName
                 });
 
+                ViewData["action"] = "/Home/Create";
+
                 return View(bpkb);
             }
-            return RedirectToAction("Login", "Auth");
+
+            return Redirect(nameof(Index));
         }
 
         public async Task<IActionResult> Create(BPKBViewModel bpkb)
@@ -45,6 +61,48 @@ namespace Mega_Technical_Test_2024.Controllers
             await this.bpkbRequest.Create(bpkb);
             return Redirect(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ReadOrUpdate(string agreementNumber)
+        {
+            if (!string.IsNullOrEmpty(Request.Cookies["UserName"]))
+            {
+                BPKBViewModel bpkb = this.bpkbRequest.Get(agreementNumber).Result;
+
+                bpkb.Location = this.bpkbRequest.GetListStorageLocations().Result.Select(location =>
+                new SelectListItem
+                {
+                    Value = location.LocationId,
+                    Text = location.LocationName
+                });
+
+                ViewData["action"] = "/Home/Update";
+
+                return View(bpkb);
+            }
+
+            return Redirect(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(BPKBViewModel bpkb)
+        {
+            bpkb.User.UserName = Request.Cookies["UserName"];
+            await this.bpkbRequest.Update(bpkb);
+            return Redirect(nameof(Index));
+        }
+
+
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(BPKBViewModel bpkb)
+        {
+            bpkb.User.UserName = Request.Cookies["UserName"];
+            await this.bpkbRequest.Delete(bpkb);
+            return Redirect(nameof(Index));
+        }
+
 
         public IActionResult Privacy()
         {
